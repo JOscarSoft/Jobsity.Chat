@@ -1,0 +1,30 @@
+.message {
+    color: rgb(0, 0, 0);
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    border: 3px solid #077ff0;
+    background-color: #077ff0;
+}
+
+.message div{
+    font-size: 11px;
+}
+
+#messagesList{
+    height: 70vh;
+    overflow-y: scroll;
+    margin-bottom:25px;
+}
+
+.message .time {
+    float: right;
+    text-align: right;
+}
+
+.message.mine {
+    border: 3px solid #07f04d;
+    background-color: #07f04d;
+}

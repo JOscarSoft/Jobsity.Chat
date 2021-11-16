@@ -1,0 +1,61 @@
+@using System.Security.Claims
+@using Jobsity.Chat.Core.Entities
+@model List<Message>
+@{
+    ViewData["Title"] = "Chat";
+    var claimsIdentity = User.Identity as ClaimsIdentity;
+    string userID = "", userName = "";
+    if (claimsIdentity != null)
+    {
+        var userIdClaim = claimsIdentity.Claims.FirstOrDefault(f => f.Type == ClaimTypes.NameIdentifier);
+        if (userIdClaim != null)
+            userID = userIdClaim.Value;
+
+        var userNameClaim = claimsIdentity.Claims.FirstOrDefault(f => f.Type == ClaimTypes.Name);
+        if (userNameClaim != null)
+            userName = userNameClaim.Value;
+    }
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/chat.css" />
+</head>
+<script type="text/javascript">
+    var loggedUserId = '@userID';
+    var loggedUserName = '@userName';
+</script>
+
+<div id="messagesList">
+    @foreach (var message in Model)
+    {
+        string cssClass = "message";
+        if (message.UserID == userID)
+        {
+            cssClass = "message mine offset-7";
+        }
+        <div class="container">
+            <div class="row">
+                <div class="col-5 @cssClass">
+                    <p>@message.TextMessage</p>
+                    <div class="row">
+                        <div class="col-6 sender">
+                            @message.UserName
+                        </div>
+                        <div class="col-6 time">
+                            @message.CreateTime.ToShortDateString() - @message.CreateTime.ToShortTimeString()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="input-group mb-3">
+    <input type="text" id="messageInput" class="form-control" placeholder="Type your message or command" aria-label="Type your message or command" aria-describedby="basic-addon2">
+    <div class="input-group-append">
+        <button class="btn btn-success" id="sendButton" type="button">Enviar</button>
+    </div>
+</div>
+<script src="~/lib/signalr/signalr.js"></script>
+<script src="~/js/signalRChat.js"></script>
